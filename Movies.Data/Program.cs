@@ -1,12 +1,21 @@
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.EntityFrameworkCore;
+using Movies.Data.Models;
 
-// Add services to the container.
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
-var app = builder.Build();
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
+            throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-// Configure the HTTP request pipeline.
+        builder.Services.AddDbContext<MoviesDbContext>(options => options.UseSqlServer(connectionString));                                                                                
 
-app.UseHttpsRedirection();
+        var app = builder.Build();
 
-app.Run();
+        app.UseHttpsRedirection();
 
+        app.Run();
+    }
+}
