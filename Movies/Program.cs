@@ -1,7 +1,17 @@
+using Microsoft.EntityFrameworkCore;
+using Movies.Data.Interfaces;
+using Movies.Data.Models;
+using Movies.Data.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
+           throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+builder.Services.AddDbContext<MoviesDbContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -10,8 +20,8 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseRouting();
 
-app.MapControllers();
+app.UseEndpoints(endpoints => {  endpoints.MapControllers(); });
 
 app.Run();

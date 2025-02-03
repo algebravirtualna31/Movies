@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Movies.Data.Interfaces;
 using Movies.Data.Models;
+using Movies.Data.Repositories;
 
 internal class Program
 {
@@ -7,15 +9,9 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-            throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-
-        builder.Services.AddDbContext<MoviesDbContext>(options => options.UseSqlServer(connectionString));                                                                                
-
         var app = builder.Build();
 
-        app.UseHttpsRedirection();
-
+     
         app.Run();
     }
 }

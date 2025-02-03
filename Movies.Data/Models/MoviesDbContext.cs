@@ -11,5 +11,12 @@ namespace Movies.Data.Models
         }
 
         public virtual DbSet<Movie> Movies { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Movie>()
+                .ToTable("Movie");
+        }
     }
 }
