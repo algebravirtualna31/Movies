@@ -16,7 +16,7 @@ namespace Movies.Controllers
             _movieRepository = movieRepository;
         }
 
-        [HttpGet]
+        [HttpGet("getMovies")]
         //[Route("[action]")]
         public ActionResult<IEnumerable<Movie>> GetMovies()
         {
@@ -112,7 +112,23 @@ namespace Movies.Controllers
 
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error updating data");
             }
+        }
 
+        // GET: api/Movies/search
+        [HttpGet("search")]
+        public ActionResult SearchByQueryString([FromQuery] string titleSearchString, [FromQuery] int perPage = 0, [FromQuery] string orderBy = "asc")
+        {
+            try
+            {
+                var movies = _movieRepository.QueryStringFilter(titleSearchString, perPage, orderBy);
+
+                return Ok(movies);
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
+            }
         }
 
     }

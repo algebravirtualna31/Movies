@@ -14,6 +14,6 @@ namespace Movies.Data.Interfaces
 
         Movie Delete(int id);
 
-        IEnumerable<Movie> QueryStringFilter(string titleSearchString, int perPage, string orderBy = "asc");
+        IEnumerable<Movie> QueryStringFilter(string titleSearchString, int perPage, string orderBy);
     }
 }

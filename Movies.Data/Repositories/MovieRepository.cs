@@ -61,7 +61,7 @@ namespace Movies.Data.Repositories
 
             return null;
         }
-        public IEnumerable<Movie> QueryStringFilter(string titleSearchString, int perPage, string orderBy = "asc")
+        public IEnumerable<Movie> QueryStringFilter(string titleSearchString, int perPage, string orderBy)
         {
             var listOfMovies = _context.Movies.ToList();
 
