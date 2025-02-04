@@ -56,9 +56,7 @@ namespace Movies.Data.Repositories
                 result.Genre = movie.Genre;
                 result.ReleaseYear = movie.ReleaseYear;
 
-                _context.SaveChanges();
-
-                return result;
+                 _context.SaveChanges();
             }
 
             return null;

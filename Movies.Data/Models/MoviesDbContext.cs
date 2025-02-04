@@ -17,6 +17,11 @@ namespace Movies.Data.Models
         {
             modelBuilder.Entity<Movie>()
                 .ToTable("Movie");
+
+            //modelBuilder.Entity<Movie>()
+            //    .Property(p => p.Id)
+            //    .ValueGeneratedOnAdd();
+
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Movies.Controllers
         }
 
         [HttpGet]
-        [Route("[action]")]
+        //[Route("[action]")]
         public ActionResult<IEnumerable<Movie>> GetMovies()
         {
             try
@@ -32,5 +32,88 @@ namespace Movies.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
             }
         }
+
+        [HttpGet("{id}")]
+        //[Route("[action]/{id}")]
+        public ActionResult<Movie> GetMovie(int id)
+        {
+            var movie = _movieRepository.GetById(id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(movie);
+        }
+
+        [HttpPost]
+        public ActionResult PostMovie([FromBody] Movie movie)
+        {
+
+            try
+            {
+                var createdMovie = _movieRepository.Add(movie);
+
+                return CreatedAtAction(nameof(GetMovie), new { id = createdMovie.Id }, movie);
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error createing movie record");
+            }
+
+        }
+
+
+        [HttpDelete("{id}")]
+        //[Route("[action]/{id}")]
+        public ActionResult<Movie> DeleteMovie(int id)
+        {
+            var movie = _movieRepository.GetById(id);
+
+            if (movie == null)
+            {
+                return NotFound($"Movie with Id = {id} not found");
+            }
+
+            var deletedMovie = _movieRepository.Delete(id);
+
+            return Ok(deletedMovie);
+        }
+
+
+        [HttpPut("{id}")]
+        public ActionResult PutMovie(int id, Movie movie)
+        {
+
+            try
+            {
+                if(id != movie.Id)
+                {
+                    return BadRequest("Movie ID mismatch");
+                }
+
+                var movieToUpdate = _movieRepository.GetById(id);
+
+                if (movieToUpdate == null)
+                {
+                    return NotFound($"Movie with Id = {id} not found");
+                }
+
+                var updatedMovie = _movieRepository.Update(movie);  
+
+
+                return Ok(updatedMovie);
+
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error updating data");
+            }
+
+        }
+
     }
 }
